@@ -6,7 +6,7 @@ from pickle import UnpicklingError
 import sqlite3
 
 logging.basicConfig(
-    filename='HW1/Q1/python/logs/upload.log', 
+    filename='upload.log', 
     level=logging.INFO,
     format='%(asctime)s %(levelname)s:%(message)s')
 logger = logging.getLogger()
@@ -46,7 +46,7 @@ class Upload():
     
     def write_file(self):
         try:
-            with open ('HW1/Q1/data/graph.json', 'w') as node_file:
+            with open ('graph.json', 'w') as node_file:
                 json.dump(self.graph, node_file)
         except (OSError, IOError) as err:
             logger.info(" {}".format(err))
@@ -73,8 +73,7 @@ class Upload():
 
 if __name__ == "__main__":
     up = Upload()
-    up.unpickle('HW1/Q1/data/graph.pickle')
-    #up.upload('HW1/Q1/python/wik.db')
+    up.unpickle('graph.pickle')
     up.init_graph()
     up.write_file()
 

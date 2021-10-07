@@ -9,7 +9,7 @@ import sys
 import time
 
 logging.basicConfig(
-    filename='./logs/graph.log', 
+    filename='graph.log', 
     level=logging.INFO,
     format='%(asctime)s %(levelname)s:%(message)s')
 logger = logging.getLogger()
@@ -37,7 +37,7 @@ class Graph():
         def __str__(self):
             return 'Graph Error: {0} '.format(self.message)
     
-    def write_adj_list(self, output_file="HW1/Q1/python/graph.pickle"):
+    def write_adj_list(self, output_file="graph.pickle"):
         """ 
         Write adj_list to pickle file
         """
@@ -45,8 +45,11 @@ class Graph():
             raise self.GraphError("Graph is empty.")
         with open(output_file, 'wb') as output_file:
             pickle.dump(self.adj_list, output_file)
+        graph_json = json.dumps(self.adj_list, indent=4)
+        with open("graph.json", 'w') as output_file:
+            output_file.write(graph_json)
 
-    def start(self, origin='Book of Genesis', end='Book of Revelation'):
+    def start(self, origin='Data visualization', end='Data analysis'):
         """
         Initialize web api search.
         """
@@ -74,7 +77,7 @@ class Graph():
                 arr = []
                 for link in links.find_all('li'):
                     arr.append(link.get_text())
-                    if len(self.adj_list) < 5000:
+                    if len(self.adj_list) < 6:
                         stack.append(link.get_text())
                 self.adj_list[entry] += arr
             except JSONDecodeError as info:
@@ -118,6 +121,7 @@ class Graph():
         while stack:
             entry = stack.pop(0)
             if entry == end:
+                print("FOUND!")
                 break
             if entry.isascii() and entry not in self.adj_list:
                 self.adj_list[entry] = []
@@ -125,7 +129,7 @@ class Graph():
                 TO DO: Implement error handling and error catching
                 """
                 explore(entry)
-                time.sleep(2)
+                time.sleep(1)
             elif not entry.isascii():
                 logger.info(" Not ascii: {}".format(entry))
             elif entry in self.adj_list:

@@ -46,10 +46,10 @@ class Graph():
         with open(output_file, 'wb') as output_file:
             pickle.dump(self.adj_list, output_file)
         graph_json = json.dumps(self.adj_list, indent=4)
-        with open("graph.json", 'w') as output_file:
+        with open("wiki_nodes_links.json", 'w') as output_file:
             output_file.write(graph_json)
 
-    def start(self, origin='Data visualization', end='Data analysis'):
+    def start(self, origin='Data visualization', end=''):
         """
         Initialize web api search.
         """
@@ -77,7 +77,7 @@ class Graph():
                 arr = []
                 for link in links.find_all('li'):
                     arr.append(link.get_text())
-                    if len(self.adj_list) < 6:
+                    if len(self.adj_list) < 5:
                         stack.append(link.get_text())
                 self.adj_list[entry] += arr
             except JSONDecodeError as info:
@@ -137,8 +137,10 @@ class Graph():
             print("The size of the dictionary is {} bytes".format(sys.getsizeof(self.adj_list)))        
 
 if __name__ == "__main__":
+    start = time.time()
     g = Graph()
     g.start()
     g.write_adj_list()
+    print("Time elapsed: " + str(time.time() - start))
    
    

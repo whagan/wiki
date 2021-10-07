@@ -47,7 +47,7 @@ class Upload():
     def write_file(self):
         try:
             with open ('graph.json', 'w') as node_file:
-                json.dump(self.graph, node_file)
+                json.dump(self.graph, node_file, indent=4)
         except (OSError, IOError) as err:
             logger.info(" {}".format(err))
             return
@@ -76,5 +76,6 @@ if __name__ == "__main__":
     up.unpickle('graph.pickle')
     up.init_graph()
     up.write_file()
+   
 
 
